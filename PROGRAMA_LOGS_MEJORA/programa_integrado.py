@@ -1,5 +1,6 @@
 import tkinter as tk
 import customtkinter as ctk
+from tkinter import ttk
 from tkinter import messagebox, filedialog
 import winrm
 import pandas as pd
@@ -336,12 +337,16 @@ class ScrollableTreeView(ctk.CTkFrame):
         self.tree_frame.pack(fill="both", expand=True)
         
         # Crear el Treeview con estilo personalizado
-        style = tk.ttk.Style()
+        style = ttk.Style()
+        try:
+            style.theme_use("clam")
+        except Exception:
+            pass
         style.configure("Treeview", background="#E0F0FF", foreground="#333333", rowheight=25, fieldbackground="#E0F0FF")
         style.configure("Treeview.Heading", background="#4B8BBE", foreground="white", relief="flat")
         style.map("Treeview", background=[('selected', '#4B8BBE')])
         
-        self.tree = tk.ttk.Treeview(self.tree_frame, columns=columns, show="headings", height=height)
+        self.tree = ttk.Treeview(self.tree_frame, columns=columns, show="headings", height=height)
         
         # Configurar encabezados y columnas
         for col in columns:

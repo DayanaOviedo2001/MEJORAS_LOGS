@@ -241,6 +241,13 @@ class App(tk.Tk):
             "Servidor", "Host", "LocalAddress", "LocalPort",
             "RemoteAddress", "RemotePort", "State", "ProcessName", "Organizacion"
         )
+        style = ttk.Style()
+        try:
+            style.theme_use("clam")
+        except Exception:
+            pass
+        style.configure("Treeview.Heading", foreground="black")
+        style.configure("Treeview", rowheight=24)
         self.tree = ttk.Treeview(frame_tabla, columns=columns, show="headings", selectmode="browse")
         for col in columns:
             self.tree.heading(col, text=col)

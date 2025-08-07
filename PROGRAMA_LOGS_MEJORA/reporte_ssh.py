@@ -153,6 +153,13 @@ class App(tk.Tk):
         frame_tabla.pack(padx=10, pady=10, fill="both", expand=True)
 
         columns = ("Servidor", "Host", "Disco", "Nombre Volumen", "Total (GB)", "Usado (GB)", "Libre (GB)", "Uso (%)")
+        style = ttk.Style()
+        try:
+            style.theme_use("clam")
+        except Exception:
+            pass
+        style.configure("Treeview.Heading", foreground="black")
+        style.configure("Treeview", rowheight=24)
         self.tabla = ttk.Treeview(frame_tabla, columns=columns, show="headings")
 
         for col in columns:
