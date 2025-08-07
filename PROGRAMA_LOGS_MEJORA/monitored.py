@@ -249,7 +249,7 @@ class App(tk.Tk):
             except Exception:
                 continue
         style_name = "Monit.Treeview"
-        style.configure(style_name, rowheight=24)
+        style.configure(style_name, background="#FFFFFF", fieldbackground="#FFFFFF", foreground="#000000", rowheight=24)
         style.configure(f"{style_name}.Heading", background="#D9D9D9", foreground="#000000", relief="flat", font=("Segoe UI", 10, "bold"), anchor="center")
         style.configure("Treeview.Heading", background="#D9D9D9", foreground="#000000", relief="flat", font=("Segoe UI", 10, "bold"), anchor="center")
         style.map(f"{style_name}.Heading",
@@ -258,6 +258,9 @@ class App(tk.Tk):
         style.map("Treeview.Heading",
                   background=[("pressed", "#D9D9D9"), ("active", "#E5E5E5"), ("!active", "#D9D9D9")],
                   foreground=[("pressed", "#000000"), ("active", "#000000"), ("!disabled", "#000000")])
+        style.map(style_name,
+                  background=[('selected', '#4B8BBE')],
+                  foreground=[('selected', '#FFFFFF')])
         style.layout("Treeview.Heading", [
             ("Treeheading.cell", {"sticky": "nswe"}),
             ("Treeheading.border", {"sticky": "nswe", "children": [

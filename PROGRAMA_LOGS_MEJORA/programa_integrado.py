@@ -354,7 +354,9 @@ class ScrollableTreeView(ctk.CTkFrame):
         style.map("Treeview.Heading",
                   background=[("pressed", "#D9D9D9"), ("active", "#E5E5E5"), ("!active", "#D9D9D9")],
                   foreground=[("pressed", "#000000"), ("active", "#000000"), ("!disabled", "#000000")])
-        style.map(style_name, background=[["selected", "#4B8BBE"]])
+        style.map(style_name,
+                  background=[["selected", "#4B8BBE"]],
+                  foreground=[["selected", "#FFFFFF"]])
         style.layout("Treeview.Heading", [
             ("Treeheading.cell", {"sticky": "nswe"}),
             ("Treeheading.border", {"sticky": "nswe", "children": [
