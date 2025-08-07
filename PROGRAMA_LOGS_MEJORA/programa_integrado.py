@@ -346,17 +346,29 @@ class ScrollableTreeView(ctk.CTkFrame):
                 continue
         style_name = "Monit.Treeview"
         style.configure(style_name, background="#E0F0FF", foreground="#333333", rowheight=25, fieldbackground="#E0F0FF")
-        style.configure(f"{style_name}.Heading", background="#D9D9D9", foreground="#000000", relief="flat", font=("Segoe UI", 10, "bold"))
+        style.configure(f"{style_name}.Heading", background="#D9D9D9", foreground="#000000", relief="flat", font=("Segoe UI", 10, "bold"), anchor="center")
+        style.configure("Treeview.Heading", background="#D9D9D9", foreground="#000000", relief="flat", font=("Segoe UI", 10, "bold"), anchor="center")
         style.map(f"{style_name}.Heading",
-                  background=[("active", "#4B8BBE"), ("!active", "#D9D9D9")],
-                  foreground=[("!disabled", "#000000")])
-        style.map(style_name, background=[('selected', '#4B8BBE')])
+                  background=[("pressed", "#D9D9D9"), ("active", "#E5E5E5"), ("!active", "#D9D9D9")],
+                  foreground=[("pressed", "#000000"), ("active", "#000000"), ("!disabled", "#000000")])
+        style.map("Treeview.Heading",
+                  background=[("pressed", "#D9D9D9"), ("active", "#E5E5E5"), ("!active", "#D9D9D9")],
+                  foreground=[("pressed", "#000000"), ("active", "#000000"), ("!disabled", "#000000")])
+        style.map(style_name, background=[["selected", "#4B8BBE"]])
+        style.layout("Treeview.Heading", [
+            ("Treeheading.cell", {"sticky": "nswe"}),
+            ("Treeheading.border", {"sticky": "nswe", "children": [
+                ("Treeheading.padding", {"sticky": "nswe", "children": [
+                    ("Treeheading.text", {"sticky": "we"})
+                ]})
+            ]})
+        ])
         
         self.tree = ttk.Treeview(self.tree_frame, columns=columns, show="headings", height=height, style=style_name)
         
         # Configurar encabezados y columnas
         for col in columns:
-            self.tree.heading(col, text=col)
+            self.tree.heading(col, text=str(col), anchor="center")
             self.tree.column(col, width=100, anchor="center")
         
         # Crear barras de desplazamiento

@@ -250,13 +250,25 @@ class App(tk.Tk):
                 continue
         style_name = "Monit.Treeview"
         style.configure(style_name, rowheight=24)
-        style.configure(f"{style_name}.Heading", background="#D9D9D9", foreground="#000000", relief="flat", font=("Segoe UI", 10, "bold"))
+        style.configure(f"{style_name}.Heading", background="#D9D9D9", foreground="#000000", relief="flat", font=("Segoe UI", 10, "bold"), anchor="center")
+        style.configure("Treeview.Heading", background="#D9D9D9", foreground="#000000", relief="flat", font=("Segoe UI", 10, "bold"), anchor="center")
         style.map(f"{style_name}.Heading",
-                  background=[("active", "#4B8BBE"), ("!active", "#D9D9D9")],
-                  foreground=[("!disabled", "#000000")])
+                  background=[("pressed", "#D9D9D9"), ("active", "#E5E5E5"), ("!active", "#D9D9D9")],
+                  foreground=[("pressed", "#000000"), ("active", "#000000"), ("!disabled", "#000000")])
+        style.map("Treeview.Heading",
+                  background=[("pressed", "#D9D9D9"), ("active", "#E5E5E5"), ("!active", "#D9D9D9")],
+                  foreground=[("pressed", "#000000"), ("active", "#000000"), ("!disabled", "#000000")])
+        style.layout("Treeview.Heading", [
+            ("Treeheading.cell", {"sticky": "nswe"}),
+            ("Treeheading.border", {"sticky": "nswe", "children": [
+                ("Treeheading.padding", {"sticky": "nswe", "children": [
+                    ("Treeheading.text", {"sticky": "we"})
+                ]})
+            ]})
+        ])
         self.tree = ttk.Treeview(frame_tabla, columns=columns, show="headings", selectmode="browse", style=style_name)
         for col in columns:
-            self.tree.heading(col, text=col)
+            self.tree.heading(col, text=str(col), anchor="center")
             self.tree.column(col, width=120, anchor="center")
         self.tree.pack(side=tk.LEFT, fill="both", expand=True)
 
