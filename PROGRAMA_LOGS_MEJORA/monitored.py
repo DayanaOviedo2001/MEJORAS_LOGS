@@ -242,13 +242,19 @@ class App(tk.Tk):
             "RemoteAddress", "RemotePort", "State", "ProcessName", "Organizacion"
         )
         style = ttk.Style()
-        try:
-            style.theme_use("clam")
-        except Exception:
-            pass
-        style.configure("Treeview.Heading", foreground="black")
-        style.configure("Treeview", rowheight=24)
-        self.tree = ttk.Treeview(frame_tabla, columns=columns, show="headings", selectmode="browse")
+        for candidate in ("clam", "default", "alt"):
+            try:
+                style.theme_use(candidate)
+                break
+            except Exception:
+                continue
+        style_name = "Monit.Treeview"
+        style.configure(style_name, rowheight=24)
+        style.configure(f"{style_name}.Heading", background="#D9D9D9", foreground="#000000", relief="flat", font=("Segoe UI", 10, "bold"))
+        style.map(f"{style_name}.Heading",
+                  background=[("active", "#4B8BBE"), ("!active", "#D9D9D9")],
+                  foreground=[("!disabled", "#000000")])
+        self.tree = ttk.Treeview(frame_tabla, columns=columns, show="headings", selectmode="browse", style=style_name)
         for col in columns:
             self.tree.heading(col, text=col)
             self.tree.column(col, width=120, anchor="center")

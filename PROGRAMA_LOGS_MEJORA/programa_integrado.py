@@ -338,15 +338,21 @@ class ScrollableTreeView(ctk.CTkFrame):
         
         # Crear el Treeview con estilo personalizado
         style = ttk.Style()
-        try:
-            style.theme_use("clam")
-        except Exception:
-            pass
-        style.configure("Treeview", background="#E0F0FF", foreground="#333333", rowheight=25, fieldbackground="#E0F0FF")
-        style.configure("Treeview.Heading", background="#4B8BBE", foreground="white", relief="flat")
-        style.map("Treeview", background=[('selected', '#4B8BBE')])
+        for candidate in ("clam", "default", "alt"):
+            try:
+                style.theme_use(candidate)
+                break
+            except Exception:
+                continue
+        style_name = "Monit.Treeview"
+        style.configure(style_name, background="#E0F0FF", foreground="#333333", rowheight=25, fieldbackground="#E0F0FF")
+        style.configure(f"{style_name}.Heading", background="#D9D9D9", foreground="#000000", relief="flat", font=("Segoe UI", 10, "bold"))
+        style.map(f"{style_name}.Heading",
+                  background=[("active", "#4B8BBE"), ("!active", "#D9D9D9")],
+                  foreground=[("!disabled", "#000000")])
+        style.map(style_name, background=[('selected', '#4B8BBE')])
         
-        self.tree = ttk.Treeview(self.tree_frame, columns=columns, show="headings", height=height)
+        self.tree = ttk.Treeview(self.tree_frame, columns=columns, show="headings", height=height, style=style_name)
         
         # Configurar encabezados y columnas
         for col in columns:
