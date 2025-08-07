@@ -365,6 +365,9 @@ class ScrollableTreeView(ctk.CTkFrame):
         ])
         
         self.tree = ttk.Treeview(self.tree_frame, columns=columns, show="headings", height=height, style=style_name)
+        # Colores explícitos para evitar contraste blanco-blanco
+        self.tree.tag_configure("row", background="#FFFFFF", foreground="#000000")
+        self.tree.configure(selectmode="browse")
         
         # Configurar encabezados y columnas
         for col in columns:
@@ -389,7 +392,7 @@ class ScrollableTreeView(ctk.CTkFrame):
         self.tree.bind("<Button-3>", self.mostrar_menu_contextual)
     
     def insert(self, parent, index, values):
-        return self.tree.insert(parent, index, values=values)
+        return self.tree.insert(parent, index, values=values, tags=("row",))
     
     def delete(self, *items):
         self.tree.delete(*items)

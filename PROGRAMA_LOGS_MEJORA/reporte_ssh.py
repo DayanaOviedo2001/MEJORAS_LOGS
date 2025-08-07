@@ -177,6 +177,7 @@ class App(tk.Tk):
             ]})
         ])
         self.tabla = ttk.Treeview(frame_tabla, columns=columns, show="headings", style=style_name)
+        self.tabla.tag_configure("row", background="#FFFFFF", foreground="#000000")
 
         for col in columns:
             self.tabla.heading(col, text=str(col), anchor="center")
@@ -243,17 +244,10 @@ class App(tk.Tk):
         for srv in self.servidores:
             resultados = obtener_disco_windows(srv)
             self.datos.extend(resultados)
-            for fila in resultados:
+            for d in resultados:
                 self.tabla.insert("", tk.END, values=(
-                    fila["Servidor"],
-                    fila["Host"],
-                    fila["Disco"],
-                    fila["Nombre Volumen"],
-                    fila["Total (GB)"],
-                    fila["Usado (GB)"],
-                    fila["Libre (GB)"],
-                    fila["Uso (%)"]
-                ))
+                    srv["nombre"], srv["host"], d["Disco"], d["Nombre Volumen"], d["Total (GB)"], d["Usado (GB)"], d["Libre (GB)"], d["Uso (%)"]
+                ), tags=("row",))
         self.progress.stop()
 
     def generar_excel_gui(self):

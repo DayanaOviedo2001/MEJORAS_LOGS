@@ -267,6 +267,7 @@ class App(tk.Tk):
             ]})
         ])
         self.tree = ttk.Treeview(frame_tabla, columns=columns, show="headings", selectmode="browse", style=style_name)
+        self.tree.tag_configure("row", background="#FFFFFF", foreground="#000000")
         for col in columns:
             self.tree.heading(col, text=str(col), anchor="center")
             self.tree.column(col, width=120, anchor="center")
@@ -377,7 +378,7 @@ class App(tk.Tk):
                 fila.get("ProcessName", ""),
                 fila.get("Organizacion", "")
             )
-            self.tree.insert("", tk.END, values=valores)
+            self.tree.insert("", tk.END, values=valores, tags=("row",))
 
     def exportar_excel(self):
         if not self.datos:
