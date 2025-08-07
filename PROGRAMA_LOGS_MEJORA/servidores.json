@@ -1,0 +1,20 @@
+[
+    {
+        "nombre": "Servidor Produccion",
+        "host": "10.70.0.21",
+        "usuario": "administrador",
+        "clave": "y5smx3hF$"
+    },
+    {
+        "nombre": "Servidor Desarrollo",
+        "host": "10.70.0.22",
+        "usuario": "administrador",
+        "clave": "y5smx3hF$"
+    },
+    {
+        "nombre": "Servidor Calidad",
+        "host": "10.70.0.23",
+        "usuario": "administrador",
+        "clave": "y5smx3hF$"
+    }
+]
