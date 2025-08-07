@@ -1,5 +1,6 @@
 import tkinter as tk
 import customtkinter as ctk
+from tkinter import ttk
 from tkinter import messagebox, filedialog
 import winrm
 import pandas as pd
@@ -336,16 +337,43 @@ class ScrollableTreeView(ctk.CTkFrame):
         self.tree_frame.pack(fill="both", expand=True)
         
         # Crear el Treeview con estilo personalizado
-        style = tk.ttk.Style()
-        style.configure("Treeview", background="#E0F0FF", foreground="#333333", rowheight=25, fieldbackground="#E0F0FF")
-        style.configure("Treeview.Heading", background="#4B8BBE", foreground="white", relief="flat")
-        style.map("Treeview", background=[('selected', '#4B8BBE')])
+        style = ttk.Style()
+        for candidate in ("clam", "default", "alt"):
+            try:
+                style.theme_use(candidate)
+                break
+            except Exception:
+                continue
+        style_name = "Monit.Treeview"
+        style.configure(style_name, background="#E0F0FF", foreground="#333333", rowheight=25, fieldbackground="#E0F0FF")
+        style.configure(f"{style_name}.Heading", background="#D9D9D9", foreground="#000000", relief="flat", font=("Segoe UI", 10, "bold"), anchor="center")
+        style.configure("Treeview.Heading", background="#D9D9D9", foreground="#000000", relief="flat", font=("Segoe UI", 10, "bold"), anchor="center")
+        style.map(f"{style_name}.Heading",
+                  background=[("pressed", "#D9D9D9"), ("active", "#E5E5E5"), ("!active", "#D9D9D9")],
+                  foreground=[("pressed", "#000000"), ("active", "#000000"), ("!disabled", "#000000")])
+        style.map("Treeview.Heading",
+                  background=[("pressed", "#D9D9D9"), ("active", "#E5E5E5"), ("!active", "#D9D9D9")],
+                  foreground=[("pressed", "#000000"), ("active", "#000000"), ("!disabled", "#000000")])
+        style.map(style_name,
+                  background=[["selected", "#4B8BBE"]],
+                  foreground=[["selected", "#FFFFFF"]])
+        style.layout("Treeview.Heading", [
+            ("Treeheading.cell", {"sticky": "nswe"}),
+            ("Treeheading.border", {"sticky": "nswe", "children": [
+                ("Treeheading.padding", {"sticky": "nswe", "children": [
+                    ("Treeheading.text", {"sticky": "we"})
+                ]})
+            ]})
+        ])
         
-        self.tree = tk.ttk.Treeview(self.tree_frame, columns=columns, show="headings", height=height)
+        self.tree = ttk.Treeview(self.tree_frame, columns=columns, show="headings", height=height, style=style_name)
+        # Colores explícitos para evitar contraste blanco-blanco
+        self.tree.tag_configure("row", background="#FFFFFF", foreground="#000000")
+        self.tree.configure(selectmode="browse")
         
         # Configurar encabezados y columnas
         for col in columns:
-            self.tree.heading(col, text=col)
+            self.tree.heading(col, text=str(col), anchor="center")
             self.tree.column(col, width=100, anchor="center")
         
         # Crear barras de desplazamiento
@@ -366,7 +394,7 @@ class ScrollableTreeView(ctk.CTkFrame):
         self.tree.bind("<Button-3>", self.mostrar_menu_contextual)
     
     def insert(self, parent, index, values):
-        return self.tree.insert(parent, index, values=values)
+        return self.tree.insert(parent, index, values=values, tags=("row",))
     
     def delete(self, *items):
         self.tree.delete(*items)

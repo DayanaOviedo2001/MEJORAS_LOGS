@@ -241,9 +241,38 @@ class App(tk.Tk):
             "Servidor", "Host", "LocalAddress", "LocalPort",
             "RemoteAddress", "RemotePort", "State", "ProcessName", "Organizacion"
         )
-        self.tree = ttk.Treeview(frame_tabla, columns=columns, show="headings", selectmode="browse")
+        style = ttk.Style()
+        for candidate in ("clam", "default", "alt"):
+            try:
+                style.theme_use(candidate)
+                break
+            except Exception:
+                continue
+        style_name = "Monit.Treeview"
+        style.configure(style_name, background="#FFFFFF", fieldbackground="#FFFFFF", foreground="#000000", rowheight=24)
+        style.configure(f"{style_name}.Heading", background="#D9D9D9", foreground="#000000", relief="flat", font=("Segoe UI", 10, "bold"), anchor="center")
+        style.configure("Treeview.Heading", background="#D9D9D9", foreground="#000000", relief="flat", font=("Segoe UI", 10, "bold"), anchor="center")
+        style.map(f"{style_name}.Heading",
+                  background=[("pressed", "#D9D9D9"), ("active", "#E5E5E5"), ("!active", "#D9D9D9")],
+                  foreground=[("pressed", "#000000"), ("active", "#000000"), ("!disabled", "#000000")])
+        style.map("Treeview.Heading",
+                  background=[("pressed", "#D9D9D9"), ("active", "#E5E5E5"), ("!active", "#D9D9D9")],
+                  foreground=[("pressed", "#000000"), ("active", "#000000"), ("!disabled", "#000000")])
+        style.map(style_name,
+                  background=[('selected', '#4B8BBE')],
+                  foreground=[('selected', '#FFFFFF')])
+        style.layout("Treeview.Heading", [
+            ("Treeheading.cell", {"sticky": "nswe"}),
+            ("Treeheading.border", {"sticky": "nswe", "children": [
+                ("Treeheading.padding", {"sticky": "nswe", "children": [
+                    ("Treeheading.text", {"sticky": "we"})
+                ]})
+            ]})
+        ])
+        self.tree = ttk.Treeview(frame_tabla, columns=columns, show="headings", selectmode="browse", style=style_name)
+        self.tree.tag_configure("row", background="#FFFFFF", foreground="#000000")
         for col in columns:
-            self.tree.heading(col, text=col)
+            self.tree.heading(col, text=str(col), anchor="center")
             self.tree.column(col, width=120, anchor="center")
         self.tree.pack(side=tk.LEFT, fill="both", expand=True)
 
@@ -352,7 +381,7 @@ class App(tk.Tk):
                 fila.get("ProcessName", ""),
                 fila.get("Organizacion", "")
             )
-            self.tree.insert("", tk.END, values=valores)
+            self.tree.insert("", tk.END, values=valores, tags=("row",))
 
     def exportar_excel(self):
         if not self.datos:
